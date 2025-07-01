@@ -1,11 +1,15 @@
-
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import EventCard from './EventCard';
 import VibeFilter from './VibeFilter';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 
 const HomePage = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [selectedVibes, setSelectedVibes] = useState<string[]>([]);
   const [events, setEvents] = useState([
     {
@@ -46,6 +50,23 @@ const HomePage = () => {
   ]);
 
   const handleRSVP = (eventId: string) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to RSVP for events",
+        action: (
+          <Button 
+            onClick={() => navigate('/auth')}
+            variant="outline"
+            size="sm"
+          >
+            Sign In
+          </Button>
+        ),
+      });
+      return;
+    }
+
     toast({
       title: "RSVP Confirmed! ✨",
       description: "You're on the list. See you on the scene!",
@@ -54,6 +75,23 @@ const HomePage = () => {
   };
 
   const handleVIP = (eventId: string) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to book VIP tables",
+        action: (
+          <Button 
+            onClick={() => navigate('/auth')}
+            variant="outline"
+            size="sm"
+          >
+            Sign In
+          </Button>
+        ),
+      });
+      return;
+    }
+
     const event = events.find(e => e.id === eventId);
     if (event?.sold_out) {
       toast({
@@ -88,11 +126,35 @@ const HomePage = () => {
             </h1>
             <p className="text-gray-400 mt-1">Where the vibes are immaculate ✨</p>
           </div>
-          <div className="w-12 h-12 bg-gradient-to-r from-scene-pink to-scene-purple rounded-full flex items-center justify-center scene-glow">
-            <span className="text-white font-bold text-lg">SD</span>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-scene-pink to-scene-purple rounded-full flex items-center justify-center scene-glow">
+              <span className="text-white font-bold text-lg">SD</span>
+            </div>
+            {!user && (
+              <Button 
+                onClick={() => navigate('/auth')}
+                className="scene-button text-white font-bold px-4 py-2"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Auth prompt for non-users */}
+      {!user && (
+        <div className="mx-4 mb-6 scene-card p-4 text-center border-2 border-scene-pink/50">
+          <h3 className="text-white font-bold mb-2">Join The Scene Dallas!</h3>
+          <p className="text-gray-400 text-sm mb-3">Sign up to RSVP for events, book VIP tables, and save your favorites</p>
+          <Button 
+            onClick={() => navigate('/auth')}
+            className="scene-button text-white font-bold"
+          >
+            Create Account
+          </Button>
+        </div>
+      )}
 
       {/* Vibe Filter */}
       <VibeFilter onVibeChange={handleVibeChange} />
