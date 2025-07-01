@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom Scene Dallas colors
+				'scene-dark': '#0B0B1A',
+				'scene-purple': '#6B46C1',
+				'scene-pink': '#EC4899',
+				'scene-cyan': '#06B6D4',
+				'scene-gold': '#F59E0B',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +91,36 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(236, 72, 153, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 40px rgba(236, 72, 153, 0.8)'
+					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glow': 'glow 2s ease-in-out infinite',
+				'fade-in': 'fade-in 0.5s ease-out'
+			},
+			backgroundImage: {
+				'gradient-scene': 'linear-gradient(135deg, #0B0B1A 0%, #1E1B4B 50%, #312E81 100%)',
+				'gradient-card': 'linear-gradient(145deg, rgba(107, 70, 193, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)',
+				'gradient-glow': 'linear-gradient(90deg, #EC4899, #06B6D4, #F59E0B)',
 			}
 		}
 	},
